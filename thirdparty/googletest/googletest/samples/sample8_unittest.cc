@@ -27,14 +27,14 @@
 // (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-
 // This sample shows how to test code relying on some global flag variables.
 // Combine() helps with generating all possible combinations of such flags,
 // and each test is given one combination as a parameter.
 
 // Use class definitions to test from this header.
-#include "prime_tables.h"
+#include <tuple>
 
+#include "prime_tables.h"
 #include "gtest/gtest.h"
 namespace {
 
@@ -79,10 +79,10 @@ class HybridPrimeTable : public PrimeTable {
   int max_precalculated_;
 };
 
-using ::testing::TestWithParam;
 using ::testing::Bool;
-using ::testing::Values;
 using ::testing::Combine;
+using ::testing::TestWithParam;
+using ::testing::Values;
 
 // To test all code paths for HybridPrimeTable we must test it with numbers
 // both within and outside PreCalculatedPrimeTable's capacity and also with
@@ -148,8 +148,7 @@ TEST_P(PrimeTableTest, CanGetNextPrime) {
 // will put some of the tested numbers beyond the capability of the
 // PrecalcPrimeTable instance and some inside it (10). Combine will produce all
 // possible combinations.
-INSTANTIATE_TEST_CASE_P(MeaningfulTestParameters,
-                        PrimeTableTest,
-                        Combine(Bool(), Values(1, 10)));
+INSTANTIATE_TEST_SUITE_P(MeaningfulTestParameters, PrimeTableTest,
+                         Combine(Bool(), Values(1, 10)));
 
 }  // namespace
